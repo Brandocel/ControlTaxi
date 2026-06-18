@@ -1,0 +1,98 @@
+<Window x:Class="ControlTaxi.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ControlTaxi.Desktop.ViewModels"
+        xmlns:views="clr-namespace:ControlTaxi.Desktop.Views"
+        mc:Ignorable="d"
+        Title="Control Taxi" Height="700" Width="1120"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource Canvas}" FontFamily="{StaticResource UiFont}">
+
+    <Window.Resources>
+        <!-- Mapeo ViewModel -> Vista (navegación por convención MVVM) -->
+        <DataTemplate DataType="{x:Type vm:RelacionesViewModel}">
+            <views:RelacionesView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="232" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== Menú lateral ===== -->
+        <Border Grid.Column="0" Background="{StaticResource BrandDark}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="0,22,0,18">
+                    <TextBlock Text="CONTROL TAXI" Foreground="White" FontSize="17"
+                               FontWeight="Bold" Margin="22,0,0,2" />
+                    <TextBlock Text="Grupo HOKA" Foreground="{StaticResource BrandGold}"
+                               FontSize="12" FontWeight="SemiBold" Margin="22,0,0,0" />
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom" Margin="22,0,22,18">
+                    <Separator Background="#22384A" Margin="0,0,0,12" />
+                    <TextBlock Text="Sesión" Foreground="{StaticResource TextOnDarkMuted}" FontSize="11" />
+                    <TextBlock Text="{Binding UsuarioActual}" Foreground="White" FontWeight="SemiBold" FontSize="13" />
+                </StackPanel>
+
+                <StackPanel>
+                    <Button Style="{StaticResource NavButton}" Content="📊  Dashboard"
+                            Command="{Binding NavegarDashboardCommand}" />
+                    <Button Style="{StaticResource NavButton}" Content="🔗  Relaciones ticket–taxista"
+                            Command="{Binding NavegarRelacionesCommand}" />
+                    <Button Style="{StaticResource NavButton}" Content="📅  Registro Diario" IsEnabled="False" />
+                    <Button Style="{StaticResource NavButton}" Content="🧾  Ventas" IsEnabled="False" />
+                    <Button Style="{StaticResource NavButton}" Content="💵  Pagos" IsEnabled="False" />
+                    <Button Style="{StaticResource NavButton}" Content="📂  Cortes" IsEnabled="False" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- ===== Área de contenido ===== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource Surface}" Padding="24,16"
+                    BorderBrush="{StaticResource BorderSoft}" BorderThickness="0,0,0,1">
+                <DockPanel>
+                    <Border DockPanel.Dock="Right" Background="{StaticResource SurfaceAlt}"
+                            CornerRadius="16" Padding="14,6">
+                        <TextBlock Text="{Binding UsuarioActual}" FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextSecondary}" />
+                    </Border>
+                    <TextBlock Text="{Binding TituloModulo}" Style="{StaticResource PageTitle}"
+                               VerticalAlignment="Center" />
+                </DockPanel>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="20">
+                <ContentControl Content="{Binding CurrentView}">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <Trigger Property="Content" Value="{x:Null}">
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <TextBlock Text="Selecciona un módulo del menú."
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Foreground="{StaticResource TextMuted}" FontSize="16" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

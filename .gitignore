@@ -1,0 +1,103 @@
+# ============================================================
+#  .gitignore — Control Taxi (.NET 9 / WPF)
+# ============================================================
+
+# --- Resultados de compilación ---
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+build/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+# --- Carpetas de Visual Studio / Rider / VS Code ---
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# --- Archivos temporales y de usuario ---
+*.tmp
+*.tmp_proj
+*.cache
+*.bak
+*.swp
+*~
+
+# --- NuGet ---
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!packages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# --- Resultados de pruebas y cobertura ---
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# --- Publicación ---
+publish/
+[Pp]ublish/
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.pubxml.user
+PublishScripts/
+
+# --- Bases de datos locales / archivos de datos ---
+*.mdf
+*.ldf
+*.ndf
+*.sqlite
+*.db
+
+# --- Logs de la aplicación (por si alguno cae dentro del repo) ---
+*.log
+
+# --- Sistema operativo ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# ============================================================
+#  Secretos y configuración local — NO subir
+#  appsettings.json (plantilla sin secretos) SÍ se sube,
+#  pero las variantes locales/con credenciales NO.
+# ============================================================
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+*.secrets
+.env
+*.pfx
+*.key
+
+# ============================================================
+#  IMPORTANTE: lo que SÍ debe subirse (no ignorar)
+#  - src/ControlTaxi.Infrastructure/Persistence/Migrations/  (son código)
+#  - appsettings.json                                        (plantilla)
+#  - docs/, AGENTS.md, CLAUDE.md, README.md
+# ============================================================
