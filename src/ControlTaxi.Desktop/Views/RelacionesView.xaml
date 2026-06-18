@@ -1,4 +1,4 @@
-<UserControl x:Class="ControlTaxi.Desktop.Views.RelacionesView"
+﻿<UserControl x:Class="ControlTaxi.Desktop.Views.RelacionesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,56 +9,51 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
-        <!-- Badge base; el color cambia según el estatus (DataTriggers) -->
-        <Style x:Key="BadgeBase" TargetType="Border">
-            <Setter Property="CornerRadius" Value="11" />
-            <Setter Property="Padding" Value="10,3" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
+        <!-- Celdas de estatus: color de celda completa, sin capsula -->
+        <Style x:Key="CeldaEstatusBase" TargetType="DataGridCell">
             <Setter Property="Background" Value="{StaticResource BadgeGreyBg}" />
-            <Setter Property="BorderBrush" Value="{StaticResource BadgeGreyFg}" />
-            <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreyFg}" />
-            <Setter Property="TextElement.FontWeight" Value="SemiBold" />
-            <Setter Property="TextElement.FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{StaticResource BadgeGreyFg}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
-        <Style x:Key="EstatusBadge" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
+        <Style x:Key="CeldaEstatus" TargetType="DataGridCell" BasedOn="{StaticResource CeldaEstatusBase}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Estatus}" Value="Ligado">
                     <Setter Property="Background" Value="{StaticResource BadgeTealBg}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BadgeTealFg}" />
-                    <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeTealFg}" />
+                    <Setter Property="Foreground" Value="{StaticResource BadgeTealFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Estatus}" Value="ComisionPendiente">
                     <Setter Property="Background" Value="{StaticResource BadgeAmberBg}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BadgeAmberFg}" />
-                    <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeAmberFg}" />
+                    <Setter Property="Foreground" Value="{StaticResource BadgeAmberFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Estatus}" Value="ComisionPagada">
                     <Setter Property="Background" Value="{StaticResource BadgeGreenBg}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BadgeGreenFg}" />
-                    <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreenFg}" />
+                    <Setter Property="Foreground" Value="{StaticResource BadgeGreenFg}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="DejadaBadge" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
+        <Style x:Key="CeldaDejada" TargetType="DataGridCell" BasedOn="{StaticResource CeldaEstatusBase}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding EstatusDejada}" Value="Pendiente">
                     <Setter Property="Background" Value="{StaticResource BadgeAmberBg}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BadgeAmberFg}" />
-                    <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeAmberFg}" />
+                    <Setter Property="Foreground" Value="{StaticResource BadgeAmberFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding EstatusDejada}" Value="Pagado">
                     <Setter Property="Background" Value="{StaticResource BadgeGreenBg}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BadgeGreenFg}" />
-                    <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreenFg}" />
+                    <Setter Property="Foreground" Value="{StaticResource BadgeGreenFg}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <!-- Barra del skeleton: pulso SOLO de opacidad (no cambia tamaño => no descuadra) -->
+        <Style x:Key="TextoCeldaEstatus" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        <!-- Barra del skeleton: pulso SOLO de opacidad (no cambia tamano => no descuadra) -->
         <Style x:Key="SkBar" TargetType="Border">
             <Setter Property="Height" Value="12" />
             <Setter Property="CornerRadius" Value="6" />
@@ -84,15 +79,15 @@
             <Border Height="40" BorderBrush="{StaticResource BorderSoft}" BorderThickness="0,0,0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="90" />
-                        <ColumnDefinition Width="90" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="220" />
                         <ColumnDefinition Width="76" />
-                        <ColumnDefinition Width="76" />
-                        <ColumnDefinition Width="160" />
-                        <ColumnDefinition Width="110" />
+                        <ColumnDefinition Width="56" />
+                        <ColumnDefinition Width="82" />
+                        <ColumnDefinition Width="86" />
+                        <ColumnDefinition Width="180" />
+                        <ColumnDefinition Width="*" MinWidth="140" />
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" Style="{StaticResource SkBar}" Width="58" />
                     <Border Grid.Column="1" Style="{StaticResource SkBar}" Width="56" />
@@ -107,7 +102,7 @@
             </Border>
         </ControlTemplate>
 
-        <!-- Una celda del encabezado réplica -->
+        <!-- Una celda del encabezado replica -->
         <Style x:Key="SkHead" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TableHeaderFg}" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -157,31 +152,31 @@
                               SelectedItem="{Binding RelacionSeleccionada}"
                               BorderThickness="0">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Folio App" Binding="{Binding FolioApp}" Width="90" />
-                            <DataGridTextColumn Header="Ticket POS" Binding="{Binding FolioOperacion}" Width="90" />
-                            <DataGridTextColumn Header="Taxista" Binding="{Binding TaxistaNombre}" Width="*" />
-                            <DataGridTextColumn Header="Transp." Binding="{Binding TransporteTipo}" Width="64" />
-                            <DataGridTextColumn Header="Pax" Binding="{Binding Pax}" Width="48"
+                            <DataGridTextColumn Header="Folio App" Binding="{Binding FolioApp}" Width="100" />
+                            <DataGridTextColumn Header="Ticket POS" Binding="{Binding FolioOperacion}" Width="100" />
+                            <DataGridTextColumn Header="Taxista" Binding="{Binding TaxistaNombre}" Width="220" />
+                            <DataGridTextColumn Header="Transp." Binding="{Binding TransporteTipo}" Width="76" />
+                            <DataGridTextColumn Header="Pax" Binding="{Binding Pax}" Width="56"
                                                 ElementStyle="{StaticResource CellCenter}" />
-                            <DataGridTextColumn Header="Venta" Binding="{Binding Venta, StringFormat=C0}" Width="76"
+                            <DataGridTextColumn Header="Venta" Binding="{Binding Venta, StringFormat=C0}" Width="82"
                                                 ElementStyle="{StaticResource CellRight}" />
-                            <DataGridTextColumn Header="Dejada" Binding="{Binding Dejada, StringFormat=C0}" Width="76"
+                            <DataGridTextColumn Header="Dejada" Binding="{Binding Dejada, StringFormat=C0}" Width="86"
                                                 ElementStyle="{StaticResource CellRight}" />
-                            <DataGridTemplateColumn Header="Estatus" Width="160">
+                            <DataGridTemplateColumn Header="Estatus" Width="180"
+                                                    CellStyle="{StaticResource CeldaEstatus}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Style="{StaticResource EstatusBadge}">
-                                            <TextBlock Text="{Binding EstatusTexto}" />
-                                        </Border>
+                                        <TextBlock Text="{Binding EstatusTexto}"
+                                                   Style="{StaticResource TextoCeldaEstatus}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Estado dejada" Width="110">
+                            <DataGridTemplateColumn Header="Estado dejada" Width="*" MinWidth="140"
+                                                    CellStyle="{StaticResource CeldaDejada}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Style="{StaticResource DejadaBadge}">
-                                            <TextBlock Text="{Binding EstatusDejadaTexto}" />
-                                        </Border>
+                                        <TextBlock Text="{Binding EstatusDejadaTexto}"
+                                                   Style="{StaticResource TextoCeldaEstatus}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -189,23 +184,23 @@
                     </DataGrid>
                 </Border>
 
-                <!-- Skeleton de carga: réplica EXACTA de la tabla (mismas columnas) -->
+                <!-- Skeleton de carga: replica EXACTA de la tabla (mismas columnas) -->
                 <Border Style="{StaticResource Card}" Padding="0" ClipToBounds="True"
                         Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
                     <StackPanel>
-                        <!-- Encabezado réplica idéntico al real -->
+                        <!-- Encabezado replica identico al real -->
                         <Border Background="{StaticResource HeaderDark}" Height="40">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="90" />
-                                    <ColumnDefinition Width="90" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="64" />
-                                    <ColumnDefinition Width="48" />
-                                    <ColumnDefinition Width="76" />
-                                    <ColumnDefinition Width="76" />
-                                    <ColumnDefinition Width="160" />
-                                    <ColumnDefinition Width="110" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="76" />
+                                <ColumnDefinition Width="56" />
+                                <ColumnDefinition Width="82" />
+                                <ColumnDefinition Width="86" />
+                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="*" MinWidth="140" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Folio App" Style="{StaticResource SkHead}" />
                                 <TextBlock Grid.Column="1" Text="Ticket POS" Style="{StaticResource SkHead}" />
@@ -232,7 +227,7 @@
             <!-- Panel lateral: ligar + cobrar -->
             <Border Grid.Column="1" Style="{StaticResource Card}" Margin="14,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="Ligar / guardar relación" Style="{StaticResource SectionTitle}" />
+                    <TextBlock Text="Ligar / guardar relacion" Style="{StaticResource SectionTitle}" />
 
                     <TextBlock Text="Folio App (ticket)" Style="{StaticResource FieldLabel}" />
                     <TextBox Text="{Binding FolioApp}" />
@@ -242,7 +237,7 @@
 
                     <TextBlock Text="Buscar taxista" Style="{StaticResource FieldLabel}" />
                     <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="🔍" Style="{StaticResource GhostButton}"
+                        <Button DockPanel.Dock="Right" Content="Buscar" Style="{StaticResource GhostButton}"
                                 Padding="10,0" Margin="6,0,0,0" Command="{Binding BuscarTaxistasCommand}" />
                         <TextBox Text="{Binding TaxistaQuery, UpdateSourceTrigger=PropertyChanged}" />
                     </DockPanel>
@@ -264,7 +259,7 @@
                     <TextBox Height="52" Padding="8" TextWrapping="Wrap" AcceptsReturn="True"
                              VerticalContentAlignment="Top" Text="{Binding Observaciones}" />
 
-                    <Button Content="Guardar relación" Style="{StaticResource PrimaryButton}"
+                    <Button Content="Guardar relacion" Style="{StaticResource PrimaryButton}"
                             Margin="0,14,0,0" Command="{Binding GuardarCommand}" />
 
                     <Separator Margin="0,16" Background="{StaticResource BorderSoft}" />
@@ -276,6 +271,7 @@
         </Grid>
 
         <TextBlock Grid.Row="2" Margin="2,12,0,0" Foreground="{StaticResource TextMuted}" FontSize="12"
-                   Text="Estatus: Pendiente de ligar → Pendiente de ticket → Ligado → Comisión pendiente/pagada" />
+                   Text="Estatus: Pendiente de ligar -> Pendiente de ticket -> Ligado -> Comision pendiente/pagada" />
     </Grid>
 </UserControl>
+

@@ -19,7 +19,7 @@
     <SolidColorBrush x:Key="Canvas" Color="#F4F6F8" />
     <SolidColorBrush x:Key="Surface" Color="#FFFFFF" />
     <SolidColorBrush x:Key="SurfaceAlt" Color="#F5F7FA" />
-    <SolidColorBrush x:Key="BorderSoft" Color="#E3E8EE" />
+    <SolidColorBrush x:Key="BorderSoft" Color="#D8DFEA" />
     <SolidColorBrush x:Key="BorderStrong" Color="#CBD2D9" />
 
     <SolidColorBrush x:Key="TextPrimary" Color="#1F2933" />
@@ -39,7 +39,7 @@
     <SolidColorBrush x:Key="RowAlt" Color="#F3F6FD" />
     <SolidColorBrush x:Key="RowHover" Color="#EDF1FB" />
     <SolidColorBrush x:Key="RowSelected" Color="#D5E0F7" />
-    <SolidColorBrush x:Key="GridLineSoft" Color="#E6EAF2" />
+    <SolidColorBrush x:Key="GridLineSoft" Color="#B8C5D8" />
     <SolidColorBrush x:Key="HeaderDark" Color="#E9EEFB" />
     <SolidColorBrush x:Key="SkeletonBar" Color="#DDE3EE" />
 
@@ -85,11 +85,12 @@
     <!-- Alineación de celdas numéricas en tablas -->
     <Style x:Key="CellRight" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Margin" Value="0,0,4,0" />
+        <Setter Property="Padding" Value="10,0" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style x:Key="CellCenter" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <!-- ============================================================
@@ -261,21 +262,30 @@
         <Setter Property="FontFamily" Value="{StaticResource UiFont}" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Background" Value="{StaticResource Surface}" />
-        <Setter Property="BorderBrush" Value="{StaticResource BorderSoft}" />
+        <Setter Property="BorderBrush" Value="{StaticResource GridLineSoft}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="RowHeaderWidth" Value="0" />
-        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="GridLinesVisibility" Value="All" />
         <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource GridLineSoft}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource GridLineSoft}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="ColumnHeaderHeight" Value="46" />
+        <Setter Property="ColumnHeaderHeight" Value="44" />
+        <Setter Property="RowHeight" Value="40" />
+        <Setter Property="MinRowHeight" Value="40" />
         <Setter Property="RowBackground" Value="{StaticResource Surface}" />
         <Setter Property="AlternatingRowBackground" Value="{StaticResource RowAlt}" />
         <Setter Property="Foreground" Value="{StaticResource TableText}" />
         <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
     </Style>
 
     <Style TargetType="DataGridColumnHeader">
@@ -285,14 +295,15 @@
         <Setter Property="Foreground" Value="{StaticResource TableHeaderFg}" />
         <Setter Property="Background" Value="{StaticResource TableHeaderBg}" />
         <Setter Property="Padding" Value="12,0" />
-        <Setter Property="BorderBrush" Value="#C9D4EC" />
-        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderBrush" Value="{StaticResource GridLineSoft}" />
+        <Setter Property="BorderThickness" Value="0,0,1,1" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="DataGridRow">
-        <Setter Property="Height" Value="44" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource RowHover}" />
@@ -305,18 +316,12 @@
     </Style>
 
     <Style TargetType="DataGridCell">
-        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DataGridCell">
-                    <Border Background="Transparent" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
 
 </ResourceDictionary>

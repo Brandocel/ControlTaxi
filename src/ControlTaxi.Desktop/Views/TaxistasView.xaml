@@ -7,7 +7,6 @@
              FontFamily="{StaticResource UiFont}" Background="Transparent">
 
     <UserControl.Resources>
-        <!-- Botón tipo enlace para la columna de acciones -->
         <Style x:Key="LinkButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
@@ -52,105 +51,103 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="340" />
+        </Grid.ColumnDefinitions>
 
-        <!-- Formulario "Nuevo registro" + búsqueda -->
-        <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,14">
-            <StackPanel>
-                <TextBlock Text="{Binding Mensaje, FallbackValue='Nuevo registro'}"
-                           Style="{StaticResource SectionTitle}" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+        <!-- Lista de taxistas -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
-                        <TextBlock Text="Clave" Style="{StaticResource FieldLabel}" />
-                        <TextBox Text="{Binding Clave}" IsEnabled="{Binding EsNuevo}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0">
-                        <TextBlock Text="Nombre" Style="{StaticResource FieldLabel}" />
-                        <TextBox Text="{Binding Nombre}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0">
-                        <TextBlock Text="Teléfono" Style="{StaticResource FieldLabel}" />
-                        <TextBox Text="{Binding Telefono}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="0" Grid.Column="3" Margin="8,0,0,0">
-                        <TextBlock Text="Unidad" Style="{StaticResource FieldLabel}" />
-                        <TextBox Text="{Binding Unidad}" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
-                        <TextBlock Text="Placas" Style="{StaticResource FieldLabel}" />
-                        <TextBox Text="{Binding Placas}" />
-                    </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0" VerticalAlignment="Bottom">
-                        <CheckBox Content="Activo" IsChecked="{Binding Activo}" Margin="0,0,0,8"
-                                  Foreground="{StaticResource TextPrimary}" />
-                    </StackPanel>
-                </Grid>
-
-                <DockPanel Margin="0,12,0,0">
-                    <Button DockPanel.Dock="Right" Content="Guardar" Style="{StaticResource PrimaryButton}"
-                            Command="{Binding GuardarCommand}" Margin="8,0,0,0" />
-                    <Button DockPanel.Dock="Right" Content="+ Nuevo" Style="{StaticResource GhostButton}"
-                            Command="{Binding NuevoCommand}" />
-                    <StackPanel Orientation="Horizontal">
+            <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,14">
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                         <TextBlock Text="Buscar" VerticalAlignment="Center"
                                    Foreground="{StaticResource TextSecondary}" Margin="0,0,8,0" />
                         <TextBox Width="220" Text="{Binding Busqueda, UpdateSourceTrigger=PropertyChanged}" />
                         <Button Content="Buscar" Style="{StaticResource PrimaryButton}"
                                 Margin="10,0,0,0" Command="{Binding BuscarCommand}" />
                     </StackPanel>
+                    <TextBlock Text="{Binding Mensaje}"
+                               Foreground="{StaticResource TextMuted}" VerticalAlignment="Center"
+                               TextAlignment="Right" TextTrimming="CharacterEllipsis" Margin="14,0,0,0" />
                 </DockPanel>
-            </StackPanel>
-        </Border>
+            </Border>
 
-        <!-- Tabla -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0" ClipToBounds="True">
-            <DataGrid ItemsSource="{Binding Taxistas}" BorderThickness="0">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Clave" Binding="{Binding Clave}" Width="90" />
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*" />
-                    <DataGridTextColumn Header="Unidad" Binding="{Binding Unidad}" Width="110" />
-                    <DataGridTextColumn Header="Placas" Binding="{Binding Placas}" Width="100" />
-                    <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="120" />
-                    <DataGridTemplateColumn Header="Estatus" Width="100">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource EstatusTaxistaBadge}">
-                                    <TextBlock Text="{Binding EstatusTexto}" />
-                                </Border>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Acción" Width="150">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Content="✎ Editar" Style="{StaticResource LinkButton}"
-                                            Command="{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}" />
-                                    <Button Content="🗑 Eliminar" Style="{StaticResource LinkDanger}"
-                                            Click="Eliminar_Click" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0" ClipToBounds="True">
+                <DataGrid ItemsSource="{Binding Taxistas}" BorderThickness="0" MinColumnWidth="72">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Clave" Binding="{Binding Clave}" Width="78" />
+                        <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*" MinWidth="180" />
+                        <DataGridTextColumn Header="Unidad" Binding="{Binding Unidad}" Width="88" />
+                        <DataGridTextColumn Header="Placas" Binding="{Binding Placas}" Width="96" />
+                        <DataGridTextColumn Header="Teléfono" Binding="{Binding Telefono}" Width="118" />
+                        <DataGridTemplateColumn Header="Estatus" Width="98">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource EstatusTaxistaBadge}">
+                                        <TextBlock Text="{Binding EstatusTexto}" />
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Acción" Width="142">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="Editar" Style="{StaticResource LinkButton}"
+                                                Command="{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                        <Button Content="Eliminar" Style="{StaticResource LinkDanger}"
+                                                Click="Eliminar_Click" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+
+        <!-- Formulario de taxista -->
+        <Border Grid.Column="1" Style="{StaticResource Card}" Margin="14,0,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="+ Nuevo" Style="{StaticResource GhostButton}"
+                                Command="{Binding NuevoCommand}" />
+                        <TextBlock Text="Datos del taxista" Style="{StaticResource SectionTitle}" VerticalAlignment="Center" />
+                    </DockPanel>
+
+                    <TextBlock Text="Clave" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding Clave}" IsEnabled="{Binding EsNuevo}" />
+
+                    <TextBlock Text="Nombre" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding Nombre}" />
+
+                    <TextBlock Text="Teléfono" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding Telefono}" />
+
+                    <TextBlock Text="Unidad" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding Unidad}" />
+
+                    <TextBlock Text="Placas" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding Placas}" />
+
+                    <CheckBox Content="Taxista activo" IsChecked="{Binding Activo}" Margin="0,12,0,0"
+                              Foreground="{StaticResource TextPrimary}" />
+
+                    <Button Content="Guardar taxista" Style="{StaticResource PrimaryButton}"
+                            Margin="0,16,0,0" Command="{Binding GuardarCommand}" />
+
+                    <TextBlock Text="{Binding Mensaje}" Foreground="{StaticResource Success}"
+                               TextWrapping="Wrap" Margin="0,12,0,0" />
+                </StackPanel>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>
