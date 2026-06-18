@@ -11,9 +11,13 @@
         Background="{StaticResource Canvas}" FontFamily="{StaticResource UiFont}">
 
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <!-- Mapeo ViewModel -> Vista (navegación por convención MVVM) -->
         <DataTemplate DataType="{x:Type vm:RelacionesViewModel}">
             <views:RelacionesView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UsuariosViewModel}">
+            <views:UsuariosView />
         </DataTemplate>
     </Window.Resources>
 
@@ -37,13 +41,18 @@
                     <Separator Background="#22384A" Margin="0,0,0,12" />
                     <TextBlock Text="Sesión" Foreground="{StaticResource TextOnDarkMuted}" FontSize="11" />
                     <TextBlock Text="{Binding UsuarioActual}" Foreground="White" FontWeight="SemiBold" FontSize="13" />
+                    <TextBlock Text="{Binding RolActual}" Foreground="{StaticResource BrandGold}" FontSize="11" />
                 </StackPanel>
 
                 <StackPanel>
                     <Button Style="{StaticResource NavButton}" Content="📊  Dashboard"
                             Command="{Binding NavegarDashboardCommand}" />
                     <Button Style="{StaticResource NavButton}" Content="🔗  Relaciones ticket–taxista"
-                            Command="{Binding NavegarRelacionesCommand}" />
+                            Command="{Binding NavegarRelacionesCommand}"
+                            Visibility="{Binding PuedeVerRelaciones, Converter={StaticResource BoolToVis}}" />
+                    <Button Style="{StaticResource NavButton}" Content="👤  Usuarios y permisos"
+                            Command="{Binding NavegarUsuariosCommand}"
+                            Visibility="{Binding PuedeVerUsuarios, Converter={StaticResource BoolToVis}}" />
                     <Button Style="{StaticResource NavButton}" Content="📅  Registro Diario" IsEnabled="False" />
                     <Button Style="{StaticResource NavButton}" Content="🧾  Ventas" IsEnabled="False" />
                     <Button Style="{StaticResource NavButton}" Content="💵  Pagos" IsEnabled="False" />

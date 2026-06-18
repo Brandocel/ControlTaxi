@@ -11,11 +11,13 @@
 
         <!-- Badge base; el color cambia según el estatus (DataTriggers) -->
         <Style x:Key="BadgeBase" TargetType="Border">
-            <Setter Property="CornerRadius" Value="10" />
-            <Setter Property="Padding" Value="9,3" />
+            <Setter Property="CornerRadius" Value="11" />
+            <Setter Property="Padding" Value="10,3" />
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Background" Value="{StaticResource BadgeGreyBg}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BadgeGreyFg}" />
             <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreyFg}" />
             <Setter Property="TextElement.FontWeight" Value="SemiBold" />
             <Setter Property="TextElement.FontSize" Value="12" />
@@ -25,14 +27,17 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Estatus}" Value="Ligado">
                     <Setter Property="Background" Value="{StaticResource BadgeTealBg}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BadgeTealFg}" />
                     <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeTealFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Estatus}" Value="ComisionPendiente">
                     <Setter Property="Background" Value="{StaticResource BadgeAmberBg}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BadgeAmberFg}" />
                     <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeAmberFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Estatus}" Value="ComisionPagada">
                     <Setter Property="Background" Value="{StaticResource BadgeGreenBg}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BadgeGreenFg}" />
                     <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreenFg}" />
                 </DataTrigger>
             </Style.Triggers>
@@ -42,22 +47,73 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding EstatusDejada}" Value="Pendiente">
                     <Setter Property="Background" Value="{StaticResource BadgeAmberBg}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BadgeAmberFg}" />
                     <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeAmberFg}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding EstatusDejada}" Value="Pagado">
                     <Setter Property="Background" Value="{StaticResource BadgeGreenBg}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BadgeGreenFg}" />
                     <Setter Property="TextElement.Foreground" Value="{StaticResource BadgeGreenFg}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <!-- Barra del skeleton -->
+        <!-- Barra del skeleton: pulso SOLO de opacidad (no cambia tamaño => no descuadra) -->
         <Style x:Key="SkBar" TargetType="Border">
-            <Setter Property="Height" Value="13" />
+            <Setter Property="Height" Value="12" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Background" Value="{StaticResource SkeletonBar}" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0,0,18,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="12,0,8,0" />
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             From="0.55" To="1" Duration="0:0:1.0"
+                                             AutoReverse="True" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Una fila del skeleton: MISMAS columnas que la tabla real => alineado -->
+        <ControlTemplate x:Key="SkRow" TargetType="Control">
+            <Border Height="40" BorderBrush="{StaticResource BorderSoft}" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="90" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="64" />
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition Width="76" />
+                        <ColumnDefinition Width="76" />
+                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="110" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource SkBar}" Width="58" />
+                    <Border Grid.Column="1" Style="{StaticResource SkBar}" Width="56" />
+                    <Border Grid.Column="2" Style="{StaticResource SkBar}" Width="150" />
+                    <Border Grid.Column="3" Style="{StaticResource SkBar}" Width="34" />
+                    <Border Grid.Column="4" Style="{StaticResource SkBar}" Width="22" />
+                    <Border Grid.Column="5" Style="{StaticResource SkBar}" Width="44" />
+                    <Border Grid.Column="6" Style="{StaticResource SkBar}" Width="44" />
+                    <Border Grid.Column="7" Style="{StaticResource SkBar}" Width="104" Height="20" CornerRadius="10" />
+                    <Border Grid.Column="8" Style="{StaticResource SkBar}" Width="70" Height="20" CornerRadius="10" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <!-- Una celda del encabezado réplica -->
+        <Style x:Key="SkHead" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TableHeaderFg}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="12,0,0,0" />
         </Style>
     </UserControl.Resources>
 
@@ -96,7 +152,7 @@
 
             <!-- Contenedor de la tabla con su skeleton encima -->
             <Grid Grid.Column="0">
-                <Border Style="{StaticResource Card}" Padding="0">
+                <Border Style="{StaticResource Card}" Padding="0" ClipToBounds="True">
                     <DataGrid ItemsSource="{Binding Relaciones}"
                               SelectedItem="{Binding RelacionSeleccionada}"
                               BorderThickness="0">
@@ -105,9 +161,12 @@
                             <DataGridTextColumn Header="Ticket POS" Binding="{Binding FolioOperacion}" Width="90" />
                             <DataGridTextColumn Header="Taxista" Binding="{Binding TaxistaNombre}" Width="*" />
                             <DataGridTextColumn Header="Transp." Binding="{Binding TransporteTipo}" Width="64" />
-                            <DataGridTextColumn Header="Pax" Binding="{Binding Pax}" Width="48" />
-                            <DataGridTextColumn Header="Venta" Binding="{Binding Venta, StringFormat=C0}" Width="76" />
-                            <DataGridTextColumn Header="Dejada" Binding="{Binding Dejada, StringFormat=C0}" Width="76" />
+                            <DataGridTextColumn Header="Pax" Binding="{Binding Pax}" Width="48"
+                                                ElementStyle="{StaticResource CellCenter}" />
+                            <DataGridTextColumn Header="Venta" Binding="{Binding Venta, StringFormat=C0}" Width="76"
+                                                ElementStyle="{StaticResource CellRight}" />
+                            <DataGridTextColumn Header="Dejada" Binding="{Binding Dejada, StringFormat=C0}" Width="76"
+                                                ElementStyle="{StaticResource CellRight}" />
                             <DataGridTemplateColumn Header="Estatus" Width="160">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -130,55 +189,42 @@
                     </DataGrid>
                 </Border>
 
-                <!-- Skeleton de carga (se muestra mientras IsBusy) -->
-                <Border Style="{StaticResource Card}" Padding="0"
+                <!-- Skeleton de carga: réplica EXACTA de la tabla (mismas columnas) -->
+                <Border Style="{StaticResource Card}" Padding="0" ClipToBounds="True"
                         Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
-                    <Border.Triggers>
-                        <EventTrigger RoutedEvent="Border.Loaded">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     From="0.5" To="1" Duration="0:0:0.85"
-                                                     AutoReverse="True" RepeatBehavior="Forever" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Border.Triggers>
-                    <StackPanel Margin="0">
-                        <!-- Encabezado simulado -->
-                        <Border Background="{StaticResource HeaderDark}" Height="40" CornerRadius="10,10,0,0" />
-                        <ItemsControl Margin="16,8">
-                            <ItemsControl.Resources>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Height" Value="40" />
-                                </Style>
-                            </ItemsControl.Resources>
-                            <!-- Cada fila del skeleton -->
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="200" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="160" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="220" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="180" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="200" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                            <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="70" />
-                                <Border Style="{StaticResource SkBar}" Width="150" /><Border Style="{StaticResource SkBar}" Width="50" />
-                                <Border Style="{StaticResource SkBar}" Width="70" /><Border Style="{StaticResource SkBar}" Width="120" /></StackPanel></Grid>
-                        </ItemsControl>
+                    <StackPanel>
+                        <!-- Encabezado réplica idéntico al real -->
+                        <Border Background="{StaticResource HeaderDark}" Height="40">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="64" />
+                                    <ColumnDefinition Width="48" />
+                                    <ColumnDefinition Width="76" />
+                                    <ColumnDefinition Width="76" />
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="110" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Folio App" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="1" Text="Ticket POS" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="2" Text="Taxista" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="3" Text="Transp." Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="4" Text="Pax" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="5" Text="Venta" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="6" Text="Dejada" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="7" Text="Estatus" Style="{StaticResource SkHead}" />
+                                <TextBlock Grid.Column="8" Text="Estado dejada" Style="{StaticResource SkHead}" />
+                            </Grid>
+                        </Border>
+                        <!-- Filas placeholder -->
+                        <Control Template="{StaticResource SkRow}" />
+                        <Control Template="{StaticResource SkRow}" />
+                        <Control Template="{StaticResource SkRow}" />
+                        <Control Template="{StaticResource SkRow}" />
+                        <Control Template="{StaticResource SkRow}" />
+                        <Control Template="{StaticResource SkRow}" />
                     </StackPanel>
                 </Border>
             </Grid>

@@ -75,6 +75,7 @@ public partial class App : System.Windows.Application
                     services.AddTransient<LoginViewModel>();
                     services.AddTransient<ShellViewModel>();
                     services.AddTransient<RelacionesViewModel>();
+                    services.AddTransient<UsuariosViewModel>();
                     services.AddTransient<LoginWindow>();
                     services.AddTransient<MainWindow>();
                 })

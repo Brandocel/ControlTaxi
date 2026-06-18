@@ -38,6 +38,8 @@ public class Usuario : AuditableEntity
 
     public bool EstaActivo => Estatus == EstatusGeneral.Activo;
 
+    public void ActualizarNombre(string nombre) => Nombre = (nombre ?? string.Empty).Trim();
+
     public void CambiarPassword(string nuevoHash)
     {
         if (string.IsNullOrWhiteSpace(nuevoHash))
