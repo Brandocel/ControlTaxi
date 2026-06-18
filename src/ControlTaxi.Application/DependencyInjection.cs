@@ -1,5 +1,6 @@
 using ControlTaxi.Application.Features.Auth;
 using ControlTaxi.Application.Features.Relaciones;
+using ControlTaxi.Application.Features.Taxistas;
 using ControlTaxi.Application.Features.Usuarios;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRelacionesService, RelacionesService>();
         services.AddScoped<IUsuariosService, UsuariosService>();
+        services.AddScoped<ITaxistasService, TaxistasService>();
         return services;
     }
 }

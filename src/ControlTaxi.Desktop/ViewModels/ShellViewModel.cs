@@ -32,6 +32,7 @@ public sealed partial class ShellViewModel : ObservableObject
 
     // Visibilidad de módulos según permisos.
     public bool PuedeVerRelaciones => _currentUser.TienePermiso(Permisos.Relaciones);
+    public bool PuedeVerTaxistas => _currentUser.TienePermiso(Permisos.Taxistas);
     public bool PuedeVerUsuarios => _currentUser.TienePermiso(Permisos.Usuarios);
 
     [ObservableProperty] private string _tituloModulo = "Dashboard";
@@ -49,6 +50,13 @@ public sealed partial class ShellViewModel : ObservableObject
     {
         TituloModulo = "Relaciones ticket–taxista";
         CurrentView = _services.GetRequiredService<RelacionesViewModel>();
+    }
+
+    [RelayCommand]
+    private void NavegarTaxistas()
+    {
+        TituloModulo = "Taxistas";
+        CurrentView = _services.GetRequiredService<TaxistasViewModel>();
     }
 
     [RelayCommand]

@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type vm:UsuariosViewModel}">
             <views:UsuariosView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TaxistasViewModel}">
+            <views:TaxistasView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -50,6 +53,9 @@
                     <Button Style="{StaticResource NavButton}" Content="🔗  Relaciones ticket–taxista"
                             Command="{Binding NavegarRelacionesCommand}"
                             Visibility="{Binding PuedeVerRelaciones, Converter={StaticResource BoolToVis}}" />
+                    <Button Style="{StaticResource NavButton}" Content="🚕  Taxistas"
+                            Command="{Binding NavegarTaxistasCommand}"
+                            Visibility="{Binding PuedeVerTaxistas, Converter={StaticResource BoolToVis}}" />
                     <Button Style="{StaticResource NavButton}" Content="👤  Usuarios y permisos"
                             Command="{Binding NavegarUsuariosCommand}"
                             Visibility="{Binding PuedeVerUsuarios, Converter={StaticResource BoolToVis}}" />
