@@ -37,9 +37,9 @@
     <SolidColorBrush x:Key="TableHeaderFg" Color="#2A3F6B" />
     <SolidColorBrush x:Key="TableText" Color="#22304D" />
     <SolidColorBrush x:Key="RowAlt" Color="#F3F6FD" />
-    <SolidColorBrush x:Key="RowHover" Color="#EDF1FB" />
-    <SolidColorBrush x:Key="RowSelected" Color="#D5E0F7" />
-    <SolidColorBrush x:Key="GridLineSoft" Color="#B8C5D8" />
+    <SolidColorBrush x:Key="RowHover" Color="#EEF2F6" />
+    <SolidColorBrush x:Key="RowSelected" Color="#E1E5EB" />
+    <SolidColorBrush x:Key="GridLineSoft" Color="#9AA8BC" />
     <SolidColorBrush x:Key="HeaderDark" Color="#E9EEFB" />
     <SolidColorBrush x:Key="SkeletonBar" Color="#DDE3EE" />
 
@@ -85,12 +85,10 @@
     <!-- Alineación de celdas numéricas en tablas -->
     <Style x:Key="CellRight" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Padding" Value="10,0" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style x:Key="CellCenter" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <!-- ============================================================
@@ -316,12 +314,27 @@
     </Style>
 
     <Style TargetType="DataGridCell">
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>
